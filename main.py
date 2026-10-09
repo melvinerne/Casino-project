@@ -23,6 +23,17 @@ else:
 birth_date = input("Wat is je geboortedatum? Gebruik dd-mm-yyyy ")
 
 
+birth_day, birth_month, birth_year = birth_date.split("-")
+birth_day = int(birth_day)
+birth_month = int(birth_month)
+birth_year = int(birth_year)
+current_year = 2026
+LEGAL_AGE = 18
+
+if current_year - birth_year < LEGAL_AGE:
+    print("Je moet minimaal 18 zijn om het casino in te mogen.")
+    exit(1)
+
 
 gender = input("Wat is je geslacht? Kies M/V/X ").upper()
 while gender != "M" and gender != "V" and gender != "X":
@@ -60,3 +71,4 @@ Budget:         €{budget:.2f}
 {enter_message}"""
 
 print(welcome_message)
+
