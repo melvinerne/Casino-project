@@ -80,14 +80,18 @@ import random
 
 continue_playing = True
 while continue_playing == True:
-    print("Je kan kiezen uit de volgende opties:\n1: rood\n2: zwart\n3: even\n4: oneven\n0: stop")
+    print("Je kan kiezen uit de volgende opties:\n1: rood\n2: zwart\n3: even\n4: oneven\n5: specifiek nummer\n0: stop")
 
-    choice = input("Kies waar je op wilt inzetten. Kies uit 0 t/m 4. ")
+    choice = input("Kies waar je op wilt inzetten. Kies uit 0 t/m 5. ")
     if choice == "0":
         print("Tot de volgende keer.")
         break
-    while choice not in ("0", "1", "2", "3", "4"):
-        choice = input("Ongeldige invoer. Kies 0 t/m 4. ")
+    elif choice == "5":
+        specific_number_choice = int(input("Kies je nummer. Je kan kiezen uit 0 t/m 36. "))
+        while specific_number_choice not in range(0, 36):
+            specific_number_choice = int(input("Ongeldige invoer. Je kan kiezen uit 0 t/m 36. "))
+    while choice not in ("0", "1", "2", "3", "4", "5"):
+        choice = input("Ongeldige invoer. Kies 0 t/m 5. ")
 
 
     bet_amount = float(input("Hoeveel wil je inzetten? "))
@@ -132,6 +136,9 @@ while continue_playing == True:
     elif choice == "4" and odd_even == "odd":
         budget = budget + (bet_amount * 2)
         print(f"Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+    elif choice == "5" and spin == specific_number_choice:
+        budget = budget + (bet_amount * 35)
+        print(f"Je wint {bet_amount * 35:.2f}. Je budget is nu {budget:.2f}")
     else:
         print(f"Helaas je verliest deze keer. Je resterend budget is nu {budget:.2f}")
     keep_on_playing = input("Wil je doorspelen? Kies ja of nee. ")
