@@ -1,5 +1,6 @@
 from idlelib.format import get_indent
 from operator import truediv
+from os import WCONTINUED
 
 print("Welkom bij Casino de Gouden Driehoek, voor we beginnen wil ik graag wat van je weten.")
 first_name = input("Wat is je voornaam? ").capitalize()
@@ -71,4 +72,34 @@ Budget:         €{budget:.2f}
 {enter_message}"""
 
 print(welcome_message)
+print("\nLaten we roulette spelen!\n")
+
+continue_playing = True
+while continue_playing == True:
+    print("Je kan kiezen uit de volgende opties:\n1: rood\n2: zwart\n3: even\n4: oneven\n0: stop")
+
+    choice = input("Kies waar je op wilt inzetten. Kies uit 0 t/m 4. ")
+    if choice == "0":
+        print("Tot de volgende keer.")
+        break
+    while choice not in ("0", "1", "2", "3", "4"):
+        choice = input("Ongeldige invoer. Kies 0 t/m 4. ")
+
+
+    bet_amount = float(input("Hoeveel wil je inzetten? "))
+
+    while bet_amount <= 0 or bet_amount > budget:
+        bet_amount = float(input("Je moet minimaal 1 inzetten. En niet hoger dan je budget. Hoeveel wil je inzetten? "))
+
+    budget = budget - bet_amount
+    print(f"Je hebt {bet_amount} ingezet. Je resterend budget is nu {budget}")
+
+
+    keep_on_playing = input("Wil je doorspelen? Kies ja of nee. ")
+    if keep_on_playing == "ja":
+        continue
+    else:
+        continue_playing = False
+        print(f"Bedankt voor het spelen vandaag. Je bent begonnen met {starting_budget} en gaat naar huis met {budget}.")
+        exit()
 
