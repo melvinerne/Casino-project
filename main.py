@@ -123,6 +123,7 @@ while continue_playing == True:
     else:
         color = "zwart"
 
+
     if spin == 0:
         print(f"Je hebt {spin} gegooid. Helaas verlies je deze keer. Je resterend budget is nu {budget:.2f}")
     elif choice == "1" and color == "rood":
