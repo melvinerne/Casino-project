@@ -1,6 +1,9 @@
-from idlelib.format import get_indent
-from operator import truediv
-from os import WCONTINUED
+import random
+
+ENTRY_FEE = 10.00
+MANDATORY_DRINKS = 15.00
+GAMBLE_TAX = 5.00
+
 
 print("Welkom bij Casino de Gouden Driehoek, voor we beginnen wil ik graag wat van je weten.")
 first_name = input("Wat is je voornaam? ").capitalize()
@@ -47,16 +50,11 @@ elif gender == "X":
     gender = "persoon"
 
 starting_budget = float(input("Wat is je budget voor vandaag?"))
-ENTRY_FEE = 10.00
-MANDATORY_DRINKS = 15.00
-GAMBLE_TAX = 5.00
-starting_cost = (ENTRY_FEE + MANDATORY_DRINKS + GAMBLE_TAX)
-budget = (starting_budget - starting_cost)
+starting_cost = ENTRY_FEE + MANDATORY_DRINKS + GAMBLE_TAX
+budget = starting_budget - starting_cost
 
-can_enter = False
 enter_message = ""
 if budget > 0:
-    can_enter = True
     enter_message = "Je hebt genoeg budget voor een avondje casino, veel geluk!"
 else:
     enter_message = "Je hebt niet genoeg budget, tot een volgende keer."
@@ -74,9 +72,6 @@ Budget:         €{budget:.2f}
 print(welcome_message)
 print("\nLaten we roulette spelen!\n")
 
-
-# round_number = 1
-import random
 
 continue_playing = True
 while continue_playing == True:
