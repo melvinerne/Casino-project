@@ -13,9 +13,9 @@ def play_roulette(budget, starting_budget):
             print("Tot de volgende keer.")
             break
         elif choice == "5":
-            specific_number_choice = int(input("Kies je nummer. Je kan kiezen uit 0 t/m 36. "))
-            while specific_number_choice not in range(0, 36):
+            while specific_number_choice not in range(0, 37):
                 specific_number_choice = int(input("Ongeldige invoer. Je kan kiezen uit 0 t/m 36. "))
+            specific_number_choice = int(input("Kies je nummer. Je kan kiezen uit 0 t/m 36. "))
         while choice not in ("0", "1", "2", "3", "4", "5"):
             choice = input("Ongeldige invoer. Kies 0 t/m 5. ")
 
@@ -28,7 +28,7 @@ def play_roulette(budget, starting_budget):
         budget = budget - bet_amount
         print(f"Je hebt {bet_amount:.2f} ingezet. Je resterend budget is {budget:.2f}")
 
-        spin = random.randint(0, 36)
+        spin = random.randint(0, 37)
 
         if spin % 2 == 0:
             odd_even = "even"
@@ -65,11 +65,11 @@ def play_roulette(budget, starting_budget):
             print(
                 f"Je hebt {spin} {color} gegooid. Helaas, je verliest deze keer. Je resterend budget is nu {budget:.2f}")
 
-            keep_on_playing = input("Wil je doorspelen? Kies ja of nee. ")
-            if keep_on_playing == "ja":
-                continue
-            elif keep_on_playing == "nee":
-               return budget
+        keep_on_playing = input("Wil je doorspelen? Kies ja of nee. ")
+        if keep_on_playing == "ja":
+            continue
+        elif keep_on_playing == "nee":
+           return budget
 
 
     return budget

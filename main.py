@@ -100,12 +100,29 @@ def show_main_menu(budget, starting_budget):
                 print(f"Bedankt voor het spelen vandaag. Je bent begonnen met {starting_budget:.2f} en gaat naar huis met {budget:.2f}.")
                 break
         elif main_menu_choice == "1":
-            spellen_menu(budget, starting_budget)
+            budget = spellen_menu(budget, starting_budget)
         elif main_menu_choice == "2":
             print(f"Je saldo is {budget:.2f}")
         elif main_menu_choice == "3":
             account_menu()
 
+def spellen_menu(budget, starting_budget):
+    print(f"""Casino de Gouden Driehoek - spellen
+{"-" * 35}
+1. Fruitmachine
+2. Roulette
+0. Terug""")
+    spellen_menu_choice = input("Kies een optie: Kies uit 0 t/m 2.  ")
+    while spellen_menu_choice not in ("0", "1", "2"):
+        spellen_menu_choice = input("Ongeldige invoer. Kies 0 t/m 2. ")
+    if spellen_menu_choice == "0":
+        show_main_menu(budget, starting_budget)
+    elif spellen_menu_choice == "1":
+        budget = play_fruitmachine(budget, starting_budget)
+        return budget
+    elif spellen_menu_choice == "2":
+        budget = play_roulette(budget, starting_budget)
+    return budget
 
 def account_menu():
     print(f"""Casino de Gouden Driehoek - account
@@ -120,23 +137,6 @@ def account_menu():
         account_menu_choice = input("Ongeldige invoer. Kies 0 t/m 4. ")
     if account_menu_choice == "0":
         return
-
-def spellen_menu(budget, starting_budget):
-    print(f"""Casino de Gouden Driehoek - spellen
-{"-" * 35}
-1. Fruitmachine
-2. Roulette
-0. Terug""")
-    spellen_menu_choice = input("Kies een optie: Kies uit 0 t/m 2.  ")
-    while spellen_menu_choice not in ("0", "1", "2"):
-        spellen_menu_choice = input("Ongeldige invoer. Kies 0 t/m 2. ")
-    if spellen_menu_choice == "0":
-        show_main_menu(budget, starting_budget)
-    elif spellen_menu_choice == "1":
-        play_fruitmachine(budget, starting_budget)
-    elif spellen_menu_choice == "2":
-        play_roulette(budget, starting_budget)
-
 
 
 
