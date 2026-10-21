@@ -9,7 +9,6 @@ def play_roulette(budget):
     while continue_playing == True:
         show_roulette_options()
 
-        # choose_game_type()
         choice, specific_number_choice = choose_game_type()
 
         bet_amount, budget = bet_placement(budget)
@@ -85,17 +84,13 @@ def check_win(choice, spin, color, odd_even, budget, bet_amount, specific_number
     if spin == 0:
         print(f"Je hebt {spin} gegooid. Helaas verlies je deze keer. Je resterend budget is nu {budget}")
     elif choice == "1" and color == "rood":
-        budget = budget + (bet_amount * 2)
-        print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+        budget = roulette_win(bet_amount, budget, color, spin)
     elif choice == "2" and color == "zwart":
-        budget = budget + (bet_amount * 2)
-        print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+        budget = roulette_win(bet_amount, budget, color, spin)
     elif choice == "3" and odd_even == "even":
-        budget = budget + (bet_amount * 2)
-        print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+        budget = roulette_win(bet_amount, budget, color, spin)
     elif choice == "4" and odd_even == "odd":
-        budget = budget + (bet_amount * 2)
-        print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+        budget = roulette_win(bet_amount, budget, color, spin)
     elif choice == "5" and spin == specific_number_choice:
         budget = budget + (bet_amount * 35)
         print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 35:.2f}. Je budget is nu {budget:.2f}")
@@ -103,3 +98,11 @@ def check_win(choice, spin, color, odd_even, budget, bet_amount, specific_number
         print(
             f"Je hebt {spin} {color} gegooid. Helaas, je verliest deze keer. Je resterend budget is nu {budget}")
     return budget
+
+
+def roulette_win(bet_amount, budget, color: str, spin) -> Any:
+    budget = budget + (bet_amount * 2)
+    print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+    return budget
+
+

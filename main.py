@@ -93,12 +93,7 @@ def determine_salutation(gender):
 
 def show_main_menu(budget, starting_budget, name, gender, birth_date, age):
     while True:
-        print(f"""Casino de Gouden Driehoek - hoofdmenu
-{"-"*35}
-1. Spellen
-2. Check saldo
-3. Account
-0. Stop""")
+        print(f"Casino de Gouden Driehoek - hoofdmenu\n{"-"*35}\n1. Spellen\n2. Check saldo\n3. Account\n0. Stop")
         main_menu_choice = input("Kies een optie: ")
         while main_menu_choice not in ("0", "1", "2", "3"):
             main_menu_choice = input("Ongeldige invoer. Kies 0 t/m 3. ")
@@ -114,16 +109,12 @@ def show_main_menu(budget, starting_budget, name, gender, birth_date, age):
             account_menu(name, gender, birth_date, age)
 
 def spellen_menu(budget, starting_budget):
-    print(f"""Casino de Gouden Driehoek - spellen
-{"-" * 35}
-1. Fruitmachine
-2. Roulette
-0. Terug""")
+    print(f"Casino de Gouden Driehoek - spellen\n{"-" * 35}\n1. Fruitmachine\n2. Roulette\n0. Terug")
     spellen_menu_choice = input("Kies een optie: Kies uit 0 t/m 2.  ")
     while spellen_menu_choice not in ("0", "1", "2"):
         spellen_menu_choice = input("Ongeldige invoer. Kies 0 t/m 2. ")
     if spellen_menu_choice == "0":
-        show_main_menu(budget, starting_budget)
+        return
     elif spellen_menu_choice == "1":
         budget = play_fruitmachine(budget)
     elif spellen_menu_choice == "2":
@@ -132,13 +123,7 @@ def spellen_menu(budget, starting_budget):
 
 def account_menu(name, gender, birth_date, age):
     while True:
-        print(f"""Casino de Gouden Driehoek - account
-{"-" * 35}
-1. Naam
-2. Aanspreekvorm
-3. Geboortedatum
-4. Leeftijd
-0. Terug""")
+        print(f"Casino de Gouden Driehoek - account\n{"-" * 35}\n1. Naam\n2. Aanspreekvorm\n3. Geboortedatum\n4. Leeftijd\n0. Terug")
         account_menu_choice = input("Kies een optie: Kies uit 0 t/m 4 ")
         while account_menu_choice not in ("0", "1", "2", "3", "4"):
             account_menu_choice = input("Ongeldige invoer. Kies 0 t/m 4. ")
