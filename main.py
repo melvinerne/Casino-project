@@ -1,72 +1,144 @@
-import random
+from tokenize import generate_tokens
+
+from games.roulette import play_roulette
+from games.fruitmachine import play_fruitmachine
 
 ENTRY_FEE = 10.00
 MANDATORY_DRINKS = 15.00
 GAMBLE_TAX = 5.00
-
-
-print("Welkom bij Casino de Gouden Driehoek, voor we beginnen wil ik graag wat van je weten.")
-first_name = input("Wat is je voornaam? ").capitalize()
-second_name = input("Wat is je achternaam? ").capitalize()
-middle_name = input("Heb je nog tussenvoegsels? Ja of nee: ").lower()
-
-while middle_name != "ja" and middle_name != "nee":
-    middle_name = input("Ongeldige invoer. Vul ja of nee in: ").lower()
-
-if middle_name == "ja":
-    middle_name = input("Wat is je tussenvoegsel? ").lower()
-
-    while not middle_name:
-        middle_name = input("Je invoer mag niet leeg zijn, wat is je tussenvoegsel?").lower()
-
-    name = f"{first_name} {middle_name} {second_name}"
-else:
-    name = f"{first_name} {second_name}"
-
-
-birth_date = input("Wat is je geboortedatum? Gebruik dd-mm-yyyy ")
-
-
-birth_day, birth_month, birth_year = birth_date.split("-")
-birth_day = int(birth_day)
-birth_month = int(birth_month)
-birth_year = int(birth_year)
 current_year = 2026
 LEGAL_AGE = 18
 
-if current_year - birth_year < LEGAL_AGE:
-    print("Je moet minimaal 18 zijn om het casino in te mogen.")
-    exit(1)
+def main():
+    print("Welkom bij Casino de Gouden Driehoek, voor we beginnen wil ik graag wat van je weten.")
+
+    first_name = input("Wat is je voornaam? ").capitalize()
+    second_name = input("Wat is je achternaam? ").capitalize()
+    middle_name = input("Heb je nog tussenvoegsels? Ja of nee: ").lower()
+
+    while middle_name != "ja" and middle_name != "nee":
+        middle_name = input("Ongeldige invoer. Vul ja of nee in: ").lower()
+
+    if middle_name == "ja":
+        middle_name = input("Wat is je tussenvoegsel? ").lower()
+        while not middle_name:
+            middle_name = input("Je invoer mag niet leeg zijn, wat is je tussenvoegsel?").lower()
+        name = f"{first_name} {middle_name} {second_name}"
+    else:
+        name = f"{first_name} {second_name}"
+
+    gender = input("Wat is je geslacht? Kies M/V/X ").upper()
+    while gender != "M" and gender != "V" and gender != "X":
+        gender = input("Ongeldige invoer. Wat is je geslacht? Kies M/V/X ").upper()
+
+    birth_date = input("Wat is je geboortedatum? Gebruik dd-mm-yyyy ")
+    age = calculate_age(birth_date)
+
+    if not check_age(age):
+        print("Je moet minimaal 18 zijn om het casino in te mogen.")
+        exit(1)
+
+    budget, starting_budget, starting_cost = calculate_budget()
+
+    if budget <= 0:
+        print("Je hebt niet genoeg budget, tot een volgende keer.")
+        exit(1)
+
+    salutation = determine_salutation(gender)
+
+    show_welcome_message(budget, name, salutation, starting_budget, starting_cost)
+
+    show_main_menu(budget, starting_budget, name, salutation, birth_date, age)
 
 
-gender = input("Wat is je geslacht? Kies M/V/X ").upper()
-while gender != "M" and gender != "V" and gender != "X":
-    gender = input("Ongeldige invoer. Wat is je geslacht? Kies M/V/X ").upper()
-if gender == "M":
-    gender = "meneer"
-elif gender == "V":
-    gender = "mevrouw"
-elif gender == "X":
-    gender = "persoon"
-
-starting_budget = float(input("Wat is je budget voor vandaag?"))
-starting_cost = ENTRY_FEE + MANDATORY_DRINKS + GAMBLE_TAX
-budget = starting_budget - starting_cost
-
-enter_message = ""
-if budget > 0:
-    enter_message = "Je hebt genoeg budget voor een avondje casino, veel geluk!"
-else:
-    enter_message = "Je hebt niet genoeg budget, tot een volgende keer."
-
-welcome_message = f"""Casino de Gouden Driehoek
+def show_welcome_message(budget: float | int, name: str, salutation: str | None, starting_budget: float,
+                         starting_cost: float | int):
+    print(f"""Casino de Gouden Driehoek
 {'-' * 35}
-Welkom {gender} {name}.
+Welkom {salutation} {name}.
 
 Startbudget:    €{starting_budget:.2f}
 Vaste Kosten:   €{starting_cost:.2f}
 Budget:         €{budget:.2f}
 
+Je hebt genoeg budget voor een avondje casino, veel geluk!\n""")
+
+
+def calculate_age(birth_date):
+    birth_day, birth_month, birth_year = birth_date.split("-")
+    birth_year = int(birth_year)
+    age = current_year - birth_year
+    return age
+
+def check_age(age):
+    if age >= LEGAL_AGE:
+        return True
+
+def calculate_budget():
+    starting_budget = float(input("Wat is je budget voor vandaag? "))
+    starting_cost = ENTRY_FEE + MANDATORY_DRINKS + GAMBLE_TAX
+    budget = starting_budget - starting_cost
+    return budget, starting_budget, starting_cost
+
+def determine_salutation(gender):
+    if gender == "M":
+        gender = "meneer"
+        return gender
+    elif gender == "V":
+        gender = "mevrouw"
+        return gender
+    elif gender == "X":
+        gender = "persoon"
+        return gender
+
+def show_main_menu(budget, starting_budget, name, gender, birth_date, age):
+    while True:
+        print(f"Casino de Gouden Driehoek - hoofdmenu\n{"-"*35}\n1. Spellen\n2. Check saldo\n3. Account\n0. Stop")
+        main_menu_choice = input("Kies een optie: ")
+        while main_menu_choice not in ("0", "1", "2", "3"):
+            main_menu_choice = input("Ongeldige invoer. Kies 0 t/m 3. ")
+
+        if main_menu_choice == "0":
+                print(f"Bedankt voor het spelen vandaag. Je bent begonnen met {starting_budget:.2f} en gaat naar huis met {budget:.2f}.")
+                break
+        elif main_menu_choice == "1":
+            budget = spellen_menu(budget, starting_budget)
+        elif main_menu_choice == "2":
+            print(f"Je saldo is {budget:.2f}")
+        elif main_menu_choice == "3":
+            account_menu(name, gender, birth_date, age)
+
+def spellen_menu(budget, starting_budget):
+    print(f"Casino de Gouden Driehoek - spellen\n{"-" * 35}\n1. Fruitmachine\n2. Roulette\n0. Terug")
+    spellen_menu_choice = input("Kies een optie: Kies uit 0 t/m 2.  ")
+    while spellen_menu_choice not in ("0", "1", "2"):
+        spellen_menu_choice = input("Ongeldige invoer. Kies 0 t/m 2. ")
+    if spellen_menu_choice == "0":
+        return
+    elif spellen_menu_choice == "1":
+        budget = play_fruitmachine(budget)
+    elif spellen_menu_choice == "2":
+        budget = play_roulette(budget)
+    return budget
+
+def account_menu(name, gender, birth_date, age):
+    while True:
+        print(f"Casino de Gouden Driehoek - account\n{"-" * 35}\n1. Naam\n2. Aanspreekvorm\n3. Geboortedatum\n4. Leeftijd\n0. Terug")
+        account_menu_choice = input("Kies een optie: Kies uit 0 t/m 4 ")
+        while account_menu_choice not in ("0", "1", "2", "3", "4"):
+            account_menu_choice = input("Ongeldige invoer. Kies 0 t/m 4. ")
+        if account_menu_choice == "1":
+            print(f"Jouw naam is: {name} \n")
+        elif account_menu_choice == "2":
+            print(f"Jouw gewenste aanspreekvorm is: {gender.capitalize()}\n")
+        elif account_menu_choice == "3":
+            print(f"Jouw geboortedatum is: {birth_date}\n")
+        elif account_menu_choice == "4":
+            print(f"Jouw leeftijd is: {age}\n")
+        elif account_menu_choice == "0":
+            return
+
+main()
 {enter_message}"""
 
 print(welcome_message)
