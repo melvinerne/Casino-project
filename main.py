@@ -1,7 +1,6 @@
-from tokenize import generate_tokens
-
 from games.roulette import play_roulette
 from games.fruitmachine import play_fruitmachine
+from games.blackjack import play_blackjack
 
 ENTRY_FEE = 10.00
 MANDATORY_DRINKS = 15.00
@@ -118,16 +117,19 @@ def spellen_menu(budget, starting_budget):
 {"-" * 35}
 1. Fruitmachine
 2. Roulette
+3. Blackjack
 0. Terug""")
-    spellen_menu_choice = input("Kies een optie: Kies uit 0 t/m 2.  ")
-    while spellen_menu_choice not in ("0", "1", "2"):
-        spellen_menu_choice = input("Ongeldige invoer. Kies 0 t/m 2. ")
+    spellen_menu_choice = input("Kies een optie: Kies uit 0 t/m 3.  ")
+    while spellen_menu_choice not in ("0", "1", "2", "3"):
+        spellen_menu_choice = input("Ongeldige invoer. Kies 0 t/m 3. ")
     if spellen_menu_choice == "0":
         show_main_menu(budget, starting_budget)
     elif spellen_menu_choice == "1":
         budget = play_fruitmachine(budget)
     elif spellen_menu_choice == "2":
         budget = play_roulette(budget)
+    elif spellen_menu_choice == "3":
+        budget = play_blackjack(budget)
     return budget
 
 def account_menu(name, gender, birth_date, age):

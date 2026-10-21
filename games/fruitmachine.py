@@ -1,4 +1,5 @@
 import random
+from helperfuncties import bet_placement
 
 def play_fruitmachine(budget):
     print("\nLaten we de fruitmachine spelen!\n")
@@ -21,16 +22,6 @@ def play_fruitmachine(budget):
 def fruitmachine_enter_message(budget):
     print(f"Huidig saldo: {budget}.")
 
-
-def bet_placement(budget):
-    bet_amount = float(input("Hoeveel wil je inzetten? "))
-
-    while bet_amount <= 0 or bet_amount > budget:
-        bet_amount = float(input("Je moet minimaal 1 inzetten. En niet hoger dan je budget. Hoeveel wil je inzetten? "))
-
-    budget = budget - bet_amount
-    print(f"Je hebt {bet_amount:.2f} ingezet. Je resterend budget is {budget:.2f}")
-    return bet_amount, budget
 
 def fruitmachine(bet_amount, budget):
     fruitslots = ["kers", "citroen", "aardbei"]

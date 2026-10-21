@@ -1,5 +1,5 @@
 import random
-from typing import Any
+from helperfuncties import bet_placement
 
 
 def play_roulette(budget):
@@ -9,7 +9,6 @@ def play_roulette(budget):
     while continue_playing == True:
         show_roulette_options()
 
-        # choose_game_type()
         choice, specific_number_choice = choose_game_type()
 
         bet_amount, budget = bet_placement(budget)
@@ -35,17 +34,6 @@ def play_roulette(budget):
 def show_roulette_options():
     print("Je kan kiezen uit de volgende opties:\n1: rood\n2: zwart\n3: even\n4: oneven\n5: specifiek nummer\n0: stop")
 
-
-def bet_placement(budget):
-    bet_amount = float(input("Hoeveel wil je inzetten? "))
-
-    while bet_amount <= 0 or bet_amount > budget:
-        bet_amount = float(
-            input("Je moet minimaal 1 inzetten. En niet hoger dan je budget. Hoeveel wil je inzetten? "))
-
-    budget = budget - bet_amount
-    print(f"Je hebt {bet_amount:.2f} ingezet. Je resterend budget is {budget:.2f}")
-    return bet_amount, budget
 
 def choose_game_type():
         specific_number_choice = None
