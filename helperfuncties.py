@@ -7,3 +7,4 @@ def bet_placement(budget):
     budget = budget - bet_amount
     print(f"Je hebt {bet_amount:.2f} ingezet. Je resterend budget is {budget:.2f}")
     return bet_amount, budget
+
