@@ -1,3 +1,4 @@
+from rich import print
 import random
 from helperfuncties import bet_placement
 

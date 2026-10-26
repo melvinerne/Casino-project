@@ -1,3 +1,8 @@
+from rich import print
+from rich.panel import Panel
+from rich.table import Table
+from rich.console import Console
+
 ENTRY_FEE = 10.00
 MANDATORY_DRINKS = 15.00
 GAMBLE_TAX = 5.00
@@ -104,15 +109,14 @@ def calculate_budget():
     return budget, starting_budget
 
 def show_welcome_message(budget: float | int, name: str, salutation: str | None, starting_budget: float):
-    print(f"""Casino de Gouden Driehoek
-{'-' * 35}
-Welkom {salutation} {name}.
+    print(Panel.fit(f"""Welkom {salutation} {name}.
 
 Startbudget:    €{starting_budget:.2f}
 Vaste Kosten:   €{TOTAL_STARTING_COST:.2f}
-Budget:         €{budget:.2f}
+Budget:         €{budget:.2f}""",
+title="Casino de Gouden Driehoek",
+subtitle="Veel geluk!"))
 
-Je hebt genoeg budget voor een avondje casino, veel geluk!\n""")
 
 def get_current_balance():
     return current_player["saldo"]
@@ -134,20 +138,29 @@ def update_current_gamesplayed(game):
 
 def show_all_accounts():
     print("Dit zijn alle accounts:")
+    table = Table()
+    table.add_column("Naam")
+    table.add_column("Saldo", justify="right")
+
     for name, profile in players.items():
-        print(f"Naam: {name}, Saldo: €{profile['saldo']:.2f}")
-    print("")
+        table.add_row(name, f"€{profile['saldo']:.2f}")
+
+    console = Console()
+    console.print(table)
+
+    # return Panel(
+    #     table,
+    #     title="Alle Accounts")
 
 def create_new_account():
     print("We gaan een nieuw account aanmaken.")
     initialize_player()
 
 def change_account():
-    print("Dit zijn alle accounts:")
     show_all_accounts()
     name = input("Naar welk account wil je wisselen? ")
     while name not in players:
-        name = input("Ongeldige invoer, voer de naam juist in. ")
+        name = input("Ongeldige invoer, voer de naam volledi in. ")
     if name in players:
         current_player = players[name]
         budget = current_player["saldo"]
@@ -171,17 +184,24 @@ def delete_account():
             return
 
 def show_account_menu():
-    print(f"Casino de Gouden Driehoek - account opties\n"
-          f"{"-" * 35}\n"
+    table = Table()
+    table.add_column("Keuze", width=5)
+    table.add_column("Actie", justify="center", width=30)
+    table.add_row("1", "Toon alle accounts")
+    table.add_row("2", "Nieuw account")
+    table.add_row("3", "Wissel account")
+    table.add_row("4", "Verwijder account")
+    table.add_row("0", "Terug")
+
+    print(Panel.fit(
           f"Huidige speler: {current_player['naam']}\n"
           f"Saldo: {current_player['saldo']}\n"
           f"Gespeelde spellen: {current_player['gespeelde_spellen']}\n"
-          f"Beschikbare spelers: {list(players.keys())}\n\n"
-          f"1. Toon alle accounts\n"
-          f"2. Nieuw account\n"
-          f"3. Wissel account\n"
-          f"4. Verwijder account\n"
-          f"0. Terug\n")
+          f"Beschikbare spelers: {list(players.keys())}",
+    title="Casino de Gouden Driehoek - Account opties"))
+    console = Console()
+    console.print(table)
+
     account_options_choice = input("Kies een optie: Kies uit 0 t/m 4 ")
     while account_options_choice not in ("0", "1", "2", "3", "4"):
         account_options_choice = input("Ongeldige invoer. Kies 0 t/m 4. ")
