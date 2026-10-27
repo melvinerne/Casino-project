@@ -1,4 +1,5 @@
 from rich import print
+from rich.panel import Panel
 import random
 from helperfuncties import bet_placement
 
@@ -26,7 +27,7 @@ def play_blackjack(budget):
         if calculate_hand_value(hand_player) == 21:
             budget = budget + (bet_amount * 1.5)
             show_cards(hand_dealer, hand_player, reveal=True)
-            print(f"Je hebt Blackjack! Je wint {bet_amount * 1.5:.2f}. Je budget is nu {budget:.2f}")
+            print(f"[bold green]Je hebt Blackjack! Je wint {bet_amount * 1.5:.2f}.[/bold green] Je budget is nu {budget:.2f}")
         else:
             while calculate_hand_value(hand_player) < 21:
                 choice = input("Kies hit of stand: ").capitalize()
@@ -37,12 +38,12 @@ def play_blackjack(budget):
                 if choice == "Hit":
                     draw_card = deck.pop(0)
                     hand_player.append(draw_card)
-                    print(f"Je pakt {draw_card[0]}{draw_card[1]}")
+                    print(f"\nJe pakt {draw_card[0]}{draw_card[1]}")
                     show_cards(hand_dealer, hand_player, reveal=False)
 
                     if calculate_hand_value(hand_player) > 21:
                         show_cards(hand_dealer, hand_player, reveal=True)
-                        print(f"Bust! Je bent over de 21. Je resterend budget is nu {budget:.2f}")
+                        print(f"[bold red]Bust![/bold red] Je bent over de 21. Je resterend budget is nu {budget:.2f}")
                         player_is_bust = True
                         break
 
@@ -51,7 +52,8 @@ def play_blackjack(budget):
 
             if not player_is_bust:
                 print(f"{"-" * 20}")
-                print("De dealer is aan de beurt\n")
+                print("De dealer is aan de beurt")
+                print(f"Dealer hand is: {hand_as_string(hand_dealer)}")
 
                 while calculate_hand_value(hand_dealer) < 17:
                     card = deck.pop(0)
@@ -59,21 +61,21 @@ def play_blackjack(budget):
                     print(f"Dealer trekt {card[0]}{card[1]}")
                     print(f"Dealer hand is: {hand_as_string(hand_dealer)}")
 
-        print(f"--- EINDSCORE ---")
-        print(f"Dealer eindstand: {calculate_hand_value(hand_dealer)}")
-        print(f"Jouw totaal: {calculate_hand_value(hand_player)}\n")
+        print(Panel.fit(f"Dealer eindstand: {calculate_hand_value(hand_dealer)}\n"
+                        f"Jouw eindstand: {calculate_hand_value(hand_player)}",
+                        title="Eindscore"))
 
         if calculate_hand_value(hand_dealer) > 21:
             budget = budget + (bet_amount * 2)
-            print(f"Dealer is bust! Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+            print(f"[bold green]Dealer is bust! Je wint {bet_amount * 2:.2f}.[/bold green] Je budget is nu {budget:.2f}")
         elif not player_is_bust and calculate_hand_value(hand_player) > calculate_hand_value(hand_dealer):
             budget = budget + (bet_amount * 1.5)
-            print(f"Je wint {bet_amount * 1.5:.2f}. Je budget is nu {budget:.2f}")
+            print(f"[bold green]Je wint {bet_amount * 1.5:.2f}![/bold green] Je budget is nu {budget:.2f}")
         elif not player_is_bust and calculate_hand_value(hand_player) == calculate_hand_value(hand_dealer):
             budget = budget + (bet_amount * 1)
-            print(f"Gelijkspel! Je krijgt je inzet terug. Je budget is nu {budget:.2f}")
+            print(f"[bold yellow]Gelijkspel![/bold yellow] Je krijgt je inzet terug. Je budget is nu {budget:.2f}")
         elif not player_is_bust:
-            print(f"Dealer wint! Je verliest je inzet. Je budget is nu {budget:.2f}")
+            print(f"[bold red]Dealer wint.[/bold red] Je verliest je inzet. Je budget is nu {budget:.2f}")
 
         keep_on_going = input("\nWil je nog een ronde spelen? (ja/nee): ").lower()
         if keep_on_going != "ja":
@@ -98,7 +100,7 @@ def hand_as_string(hand):
     return ", ".join([f"{kaart[0]}{kaart[1]}" for kaart in hand])
 
 def show_cards(hand_dealer, hand_player, reveal):
-    print(f"\nJe hand is {hand_as_string(hand_player)}")
+    print(f"Je hand is {hand_as_string(hand_player)}")
 
     if reveal:
         print(f"Dealer hand is {hand_as_string(hand_dealer)}, score: {calculate_hand_value(hand_dealer)}")
@@ -106,7 +108,7 @@ def show_cards(hand_dealer, hand_player, reveal):
         eerste_kaart = f"{hand_dealer[0][0]}{hand_dealer[0][1]}"
         print(f"Dealer hand is {eerste_kaart}, ??")
 
-    print(f"\nJe score is {calculate_hand_value(hand_player)}")
+    print(f"Je score is {calculate_hand_value(hand_player)}\n")
 
 def calculate_hand_value(hand):
     totaal = 0

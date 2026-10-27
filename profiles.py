@@ -2,6 +2,7 @@ from rich import print
 from rich.panel import Panel
 from rich.table import Table
 from rich.console import Console
+from datetime import datetime
 
 ENTRY_FEE = 10.00
 MANDATORY_DRINKS = 15.00
@@ -24,7 +25,7 @@ def initialize_player():
 
         return
 
-    birth_date, age = get_age()
+    birth_date, age = get_birthdate()
     if not check_age(age):
         print("Je moet minimaal 18 zijn om het casino in te mogen.")
         exit(1)
@@ -76,16 +77,21 @@ def get_gender():
 
     return gender
 
-def get_age():
-    birth_date = input("Wat is je geboortedatum? Gebruik dd-mm-yyyy ")
+def get_birthdate():
+    ask_birth_date = input("Wat is je geboortedatum? Gebruik dd-mm-yyyy ")
     age = calculate_age(birth_date)
 
-    return birth_date, age
+    return ask_birth_date, age
 
-def calculate_age(birth_date):
-    birth_day, birth_month, birth_year = birth_date.split("-")
-    birth_year = int(birth_year)
-    age = current_year - birth_year
+def calculate_age(ask_birth_date):
+    birth_date = datetime.strptime(ask_birth_date, "%d-%m-%Y")
+    today = datetime.now()
+
+    age = today.year - birth_date.year
+    has_had_birthday_yet = (today.month, today.day) < (birth_date.month, birth_date.day)
+    if has_had_birthday_yet:
+        age -= 1
+
     return age
 
 def check_age(age):

@@ -1,4 +1,5 @@
 from rich import print
+from rich.panel import Panel
 import random
 from helperfuncties import bet_placement
 
@@ -72,23 +73,25 @@ def get_color(spin, odd_even):
 
 def check_win(choice, spin, color, odd_even, budget, bet_amount, specific_number_choice):
     if spin == 0:
-        print(f"Je hebt {spin} gegooid. Helaas verlies je deze keer. Je resterend budget is nu {budget}")
+        print(Panel.fit(f"Je hebt {spin} gegooid. [bold red]Helaas verlies je deze keer[/bold red]. Je resterend budget is nu {budget}"))
     elif choice == "1" and color == "rood":
         budget = budget + (bet_amount * 2)
-        print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+        win_amount(spin, color, bet_amount, 2, budget)
     elif choice == "2" and color == "zwart":
         budget = budget + (bet_amount * 2)
-        print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+        win_amount(spin, color, bet_amount, 2, budget)
     elif choice == "3" and odd_even == "even":
         budget = budget + (bet_amount * 2)
-        print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+        win_amount(spin, color, bet_amount, 2, budget)
     elif choice == "4" and odd_even == "odd":
         budget = budget + (bet_amount * 2)
-        print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 2:.2f}. Je budget is nu {budget:.2f}")
+        win_amount(spin, color, bet_amount, 2, budget)
     elif choice == "5" and spin == specific_number_choice:
         budget = budget + (bet_amount * 35)
-        print(f"Je hebt {spin} {color} gegooid. Je wint {bet_amount * 35:.2f}. Je budget is nu {budget:.2f}")
+        win_amount(spin, color, bet_amount, 35, budget)
     else:
-        print(
-            f"Je hebt {spin} {color} gegooid. Helaas, je verliest deze keer. Je resterend budget is nu {budget}")
+        print(Panel.fit(f"Je hebt {spin} {color} gegooid. [bold red]Helaas, je verliest deze keer[/bold red]. Je resterend budget is nu {budget}"))
     return budget
+
+def win_amount(spin, color, bet_amount, factor, budget):
+    print(Panel.fit(f"Je hebt {spin} {color} gegooid. [bold green]Je wint {bet_amount * factor:.2f}.[/bold green] Je budget is nu {budget:.2f}"))
